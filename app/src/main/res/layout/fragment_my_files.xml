@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#444444"
+    tools:context=".ui.UserSharedFilesFragment">
+
+    <ListView
+        android:id="@+id/my_shared_files_list"
+        android:layout_width="360dp"
+        android:layout_height="634dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/fetchLinksButton"
+        android:layout_width="92dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="#d45578"
+        android:text="@string/refresh_link_button"
+        app:layout_constraintBottom_toTopOf="@+id/my_shared_files_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.416" />
+</androidx.constraintlayout.widget.ConstraintLayout>

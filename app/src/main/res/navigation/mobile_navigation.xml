@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="biz.oneilindustries.filesharer.ui.UserSharedFilesFragment"
+        android:label="@string/menu_my_files"
+        tools:layout="@layout/fragment_my_files" />
+
+    <fragment
+        android:id="@+id/nav_upload"
+        android:name="biz.oneilindustries.filesharer.ui.UploadFragment"
+        android:label="@string/menu_upload"
+        tools:layout="@layout/fragment_upload" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="biz.oneilindustries.filesharer.ui.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
