@@ -1,4 +1,4 @@
-package biz.oneilindustries.filesharer;
+package biz.oneilindustries.filesharer.listadapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
+import biz.oneilindustries.filesharer.R;
 import biz.oneilindustries.filesharer.service.FileShareService;
 import biz.oneilindustries.filesharer.ui.ManageLinkFragment;
 

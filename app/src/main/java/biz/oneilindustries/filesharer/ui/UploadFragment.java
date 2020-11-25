@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import biz.oneilindustries.filesharer.DTO.UploadTask;
 import biz.oneilindustries.filesharer.R;
-import biz.oneilindustries.filesharer.SelectedFileAdapter;
+import biz.oneilindustries.filesharer.listadapters.SelectedFileAdapter;
 import biz.oneilindustries.filesharer.http.FileUploader;
 import biz.oneilindustries.filesharer.service.AuthService;
 import biz.oneilindustries.filesharer.service.FileShareService;

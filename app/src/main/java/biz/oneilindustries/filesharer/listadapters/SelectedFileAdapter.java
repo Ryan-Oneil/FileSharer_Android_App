@@ -1,4 +1,4 @@
-package biz.oneilindustries.filesharer;
+package biz.oneilindustries.filesharer.listadapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,8 @@ import java.io.File;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
+
+import biz.oneilindustries.filesharer.R;
 
 public class SelectedFileAdapter extends ArrayAdapter<File> {
 

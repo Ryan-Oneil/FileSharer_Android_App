@@ -17,7 +17,7 @@ import biz.oneilindustries.filesharer.service.AuthService;
 
 import static biz.oneilindustries.filesharer.config.Values.APP_NAME;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private AuthService authService;
     private TextWatcher textWatcher = new TextWatcher() {
@@ -41,42 +41,41 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
         redirectIfLoggedIn();
         authService = new AuthService(getApplicationContext());
 
-        final Button button = findViewById(R.id.loginButton);
+        final Button button = findViewById(R.id.signUpButton);
 
-        TextView userNameInput = findViewById(R.id.loginUsernameInput);
+        TextView userNameInput = findViewById(R.id.registerUsernameInput);
         userNameInput.addTextChangedListener(textWatcher);
 
-        TextView passwordInput = findViewById(R.id.loginPasswordInput);
+        TextView passwordInput = findViewById(R.id.registerPasswordInput);
         passwordInput.addTextChangedListener(textWatcher);
 
+        TextView emailInput = findViewById(R.id.registerEmailInput);
+        emailInput.addTextChangedListener(textWatcher);
+
         button.setOnClickListener(v -> {
-            boolean loginSuccess = authService.loginUser(userNameInput.getText().toString(), passwordInput.getText().toString());
+            boolean registerSuccess = authService.registerNewAccount(userNameInput.getText().toString(), passwordInput.getText().toString(), emailInput.getText().toString());
 
-            if (loginSuccess) {
-                redirectIfLoggedIn();
+            if (registerSuccess) {
+                Intent intent = new Intent(this, LoginActivity.class);
+
+                startActivity(intent);
+                finish();
             }
-        });
-
-        Button registerButton = findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegisterActivity.class);
-
-            startActivity(intent);
-            finish();
         });
     }
 
     protected void checkInput() {
-        TextView userNameInput = findViewById(R.id.loginUsernameInput);
-        TextView passwordInput = findViewById(R.id.loginPasswordInput);
+        TextView userNameInput = findViewById(R.id.registerUsernameInput);
+        TextView passwordInput = findViewById(R.id.registerPasswordInput);
+        TextView emailInput = findViewById(R.id.registerEmailInput);
 
-        if (!userNameInput.getText().toString().isEmpty() && !passwordInput.getText().toString().isEmpty()) {
-            final Button button = findViewById(R.id.loginButton);
+        if (!userNameInput.getText().toString().isEmpty() && !passwordInput.getText().toString().isEmpty()  && !emailInput.getText().toString().isEmpty()) {
+            final Button button = findViewById(R.id.signUpButton);
             button.setEnabled(true);
         }
     }

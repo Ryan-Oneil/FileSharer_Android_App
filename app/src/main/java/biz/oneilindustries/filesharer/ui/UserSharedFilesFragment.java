@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.R;
-import biz.oneilindustries.filesharer.SharedLinkAdapter;
+import biz.oneilindustries.filesharer.listadapters.SharedLinkAdapter;
 import biz.oneilindustries.filesharer.service.FileShareService;
 
 public class UserSharedFilesFragment extends Fragment {

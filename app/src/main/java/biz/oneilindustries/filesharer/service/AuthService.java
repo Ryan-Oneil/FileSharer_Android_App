@@ -161,4 +161,40 @@ public class AuthService {
 
         edit.commit();
     }
+
+    public boolean registerNewAccount(String username, String password, String email) {
+        RequestBody body = RequestBody.create(String.format("{\"name\": \"%s\", \"password\": \"%s\", \"email\": \"%s\"}", username, password, email),
+                MediaType.get("application/json; charset=utf-8"));
+        final Request request = new Request.Builder()
+                .url(BACK_END_URL + "/auth/register")
+                .post(body)
+                .build();
+
+        CallbackFuture callbackFuture = new CallbackFuture();
+        Call call = client.newCall(request);
+
+        call.enqueue(callbackFuture);
+        CompletableFuture<Response> futureResponse = callbackFuture.future.thenApplyAsync(response -> response);
+        CompletableFuture<String> futureMessage = futureResponse.thenApplyAsync(response -> {
+            if (!response.isSuccessful()) {
+                try {
+                    return response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "";
+        });
+        String error = futureMessage.join();
+        final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        if (!error.isEmpty()) {
+            System.out.println(error);
+            mainHandler.post(() -> Toast.makeText(context, error, Toast.LENGTH_SHORT).show());
+            return false;
+        } else {
+            mainHandler.post(() -> Toast.makeText(context, "A confirmation email has been sent", Toast.LENGTH_SHORT).show());
+            return true;
+        }
+    }
 }

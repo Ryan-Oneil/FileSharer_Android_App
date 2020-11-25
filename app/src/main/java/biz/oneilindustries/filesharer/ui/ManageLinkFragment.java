@@ -34,7 +34,7 @@ import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
 import biz.oneilindustries.filesharer.DTO.UploadTask;
 import biz.oneilindustries.filesharer.R;
-import biz.oneilindustries.filesharer.SharedFileAdapter;
+import biz.oneilindustries.filesharer.listadapters.SharedFileAdapter;
 import biz.oneilindustries.filesharer.http.FileUploader;
 import biz.oneilindustries.filesharer.service.AuthService;
 import biz.oneilindustries.filesharer.service.FileShareService;

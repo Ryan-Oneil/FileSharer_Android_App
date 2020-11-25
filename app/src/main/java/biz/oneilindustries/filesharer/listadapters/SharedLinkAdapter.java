@@ -1,4 +1,4 @@
-package biz.oneilindustries.filesharer;
+package biz.oneilindustries.filesharer.listadapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 
 import biz.oneilindustries.filesharer.DTO.Link;
+import biz.oneilindustries.filesharer.R;
 import biz.oneilindustries.filesharer.ui.ManageLinkFragment;
 
 public class SharedLinkAdapter extends ArrayAdapter<Link> {
