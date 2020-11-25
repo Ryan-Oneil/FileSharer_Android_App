@@ -9,4 +9,9 @@
     <string name="menu_upload">Upload</string>
     <string name="menu_profile">Profile</string>
     <string name="refresh_link_button">Refresh</string>
+    <string name="file_share">File Share</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
 </resources>

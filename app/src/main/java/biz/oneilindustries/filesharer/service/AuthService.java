@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import biz.oneilindustries.filesharer.database.FileShareDatabaseManager;
 import biz.oneilindustries.filesharer.exception.InvalidLoginException;
 import biz.oneilindustries.filesharer.http.CallbackFuture;
 import okhttp3.Call;
@@ -31,10 +32,10 @@ public class AuthService {
     public AuthService(Context context) {
         this.context = context;
         client = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .callTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .callTimeout(5, TimeUnit.SECONDS)
                 .build();
         sharedPreferences = context.getSharedPreferences("FileShare",
                 MODE_PRIVATE);
@@ -64,25 +65,24 @@ public class AuthService {
         if (!response.isSuccessful()) {
             final Handler mainHandler = new Handler(Looper.getMainLooper());
             mainHandler.post(() -> {
-                try {
-                    Toast.makeText(context, response.body().string(), Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Toast.makeText(context, "Invalid Login Details", Toast.LENGTH_SHORT).show();
             });
             return false;
         } else {
             String refreshToken = response.header("Authorization");
             edit.putBoolean("isLoggedIn", true);
             edit.putString("refreshToken", refreshToken);
+
+            edit.commit();
+
             return true;
         }
     }
 
     public String fetchRefreshToken() throws IOException {
         String refreshToken = "";
-        String username = sharedPreferences.getString("username", "uni");
-        String password = sharedPreferences.getString("password", "uni");
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
 
         if (username.isEmpty() || password.isEmpty()) {
             throw new InvalidLoginException("Missing Login credentials. Please relogin");
@@ -146,7 +146,12 @@ public class AuthService {
     }
 
     public void logout() {
+        FileShareDatabaseManager fileShareDatabaseManager = new FileShareDatabaseManager(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
+
+        fileShareDatabaseManager.open();
+        fileShareDatabaseManager.clearDatabase();
+        fileShareDatabaseManager.close();
 
         edit.remove("username");
         edit.remove("password");
@@ -156,6 +161,4 @@ public class AuthService {
 
         edit.commit();
     }
-
-
 }

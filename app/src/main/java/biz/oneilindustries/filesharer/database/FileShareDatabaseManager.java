@@ -10,7 +10,6 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
@@ -226,13 +225,21 @@ public class FileShareDatabaseManager {
         myDatabase.delete(DATABASE_TABLE_SHAREDFILE, KEY_ROWID + "=?", new String[]{file.getId()});
 
         Link link = file.getLink();
-        link.setSize(link.getSize() - file.getSize());
-        link.setFiles(null);
-        updateOrInsertLink(link);
+
+        if (link != null) {
+            link.setSize(link.getSize() - file.getSize());
+            link.setFiles(null);
+            updateOrInsertLink(link);
+        }
     }
 
     public void deleteLink(Link link) {
         myDatabase.delete(DATABASE_TABLE_LINK, KEY_ROWID + "=?", new String[]{link.getId()});
         myDatabase.delete(DATABASE_TABLE_SHAREDFILE, KEY_FILE_LINK_ID + "=?", new String[]{link.getId()});
+    }
+
+    public void clearDatabase() {
+        myDatabase.execSQL("delete from " + DATABASE_TABLE_LINK);
+        myDatabase.execSQL("delete from " + DATABASE_TABLE_SHAREDFILE);
     }
 }

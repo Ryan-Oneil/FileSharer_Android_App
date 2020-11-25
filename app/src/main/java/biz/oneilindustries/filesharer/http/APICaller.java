@@ -3,9 +3,7 @@ package biz.oneilindustries.filesharer.http;
 import android.content.Context;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -21,11 +19,6 @@ public class APICaller {
         httpClient = new OkHttpClient.Builder()
                 .authenticator(new TokenAuth(context))
                 .followRedirects(false)
-                .connectionPool(new ConnectionPool(20, 60, TimeUnit.SECONDS))
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .callTimeout(60, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .build();
     }

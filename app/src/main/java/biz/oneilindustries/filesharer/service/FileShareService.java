@@ -53,7 +53,7 @@ public class FileShareService {
     }
 
     public List<Link> fetchUserLinks() {
-        String username = sharedPreferences.getString("username", "uni");
+        String username = sharedPreferences.getString("username", "");
         CompletableFuture<Response> futureResponse = apiCaller.getCall(String.format("/user/%s/links", username));
 
         CompletableFuture<List<Link>> future = futureResponse.thenApplyAsync(response -> {
