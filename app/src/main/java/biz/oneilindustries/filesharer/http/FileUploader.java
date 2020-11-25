@@ -3,8 +3,6 @@ package biz.oneilindustries.filesharer.http;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,11 +17,9 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import biz.oneilindustries.filesharer.DTO.SharedFile;
 import biz.oneilindustries.filesharer.service.AuthService;
 
 //Had to choose another HTTPClient mid way due to OkHTTP client not being able to transfer large files without crashes
@@ -35,7 +31,7 @@ public class FileUploader  {
         this.authService = authService;
     }
 
-    public List<SharedFile> uploadFiles(List<File> files, String url) throws IOException {
+    public String uploadFiles(List<File> files, String url) throws IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         MultipartEntityBuilder entitybuilder = MultipartEntityBuilder.create();
@@ -53,11 +49,11 @@ public class FileUploader  {
 
         try {
             HttpResponse httpresponse = httpclient.execute(multipartRequest);
-            return new ObjectMapper().readValue(EntityUtils.toString(httpresponse.getEntity()), new TypeReference<List<SharedFile>>() {});
+            return EntityUtils.toString(httpresponse.getEntity());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return "";
     }
 
     private String getAuthToken() throws IOException {

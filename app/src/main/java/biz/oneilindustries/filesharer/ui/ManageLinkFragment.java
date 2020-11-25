@@ -20,17 +20,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import biz.oneilindustries.filesharer.DTO.FinishedUploadTask;
 import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
 import biz.oneilindustries.filesharer.DTO.UploadTask;
-import biz.oneilindustries.filesharer.FileUtils;
 import biz.oneilindustries.filesharer.R;
 import biz.oneilindustries.filesharer.SharedFileAdapter;
 import biz.oneilindustries.filesharer.http.FileUploader;
@@ -40,7 +42,7 @@ import biz.oneilindustries.filesharer.service.FileShareService;
 import static biz.oneilindustries.filesharer.config.Values.BACK_END_URL;
 import static biz.oneilindustries.filesharer.config.Values.SHARE_URL;
 
-public class ManageLinkFragment extends Fragment {
+public class ManageLinkFragment extends FileChooserFragment {
 
     public static final int PICKFILE_RESULT_CODE = 1;
     private FileShareService fileShareService;
@@ -60,6 +62,12 @@ public class ManageLinkFragment extends Fragment {
         Bundle bundle = getArguments();
         String linkId = bundle.getString("id");
         link = fileShareService.getLocalLink(linkId);
+
+        if (link == null) {
+            getActivity().onBackPressed();
+
+            return root;
+        }
 
         EditText title = root.findViewById(R.id.editLinkTitle);
         title.setText(link.getTitle().isEmpty() ? "No Title Set" : link.getTitle());
@@ -99,13 +107,7 @@ public class ManageLinkFragment extends Fragment {
         });
 
         Button addFiles = root.findViewById(R.id.addFilesToLinkButton);
-        addFiles.setOnClickListener(v -> {
-            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseFile.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            chooseFile.setType("*/*");
-            chooseFile = Intent.createChooser(chooseFile, "Choose a file");
-            startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
-        });
+        addFiles.setOnClickListener(getButtonClickListener());
 
         Button saveLinkButton = root.findViewById(R.id.saveLinkButton);
         saveLinkButton.setOnClickListener(v -> {
@@ -126,40 +128,10 @@ public class ManageLinkFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICKFILE_RESULT_CODE && data != null) {
-            ArrayList<File> files = new ArrayList<>();
-            FileUtils fileUtils = new FileUtils(getContext());
-
-            if (data.getClipData() != null) {
-                int count = data.getClipData().getItemCount();
-                int index = 0;
-
-                while (index < count) {
-                    Uri uri = data.getClipData().getItemAt(index).getUri();
-                    String filePath = fileUtils.getPath(uri);
-                    File file = fileShareService.getCachedFile(uri, filePath);
-
-                    if (file.exists()) {
-                        files.add(file);
-                    }
-                    index++;
-                }
-            } else if (data.getData() != null) {
-                String filePath = fileUtils.getPath(data.getData());
-                File file = fileShareService.getCachedFile(data.getData(), filePath);
-
-                if (file != null && file.exists()) {
-                    files.add(file);
-                }
-            }
-
-            if (!files.isEmpty()) {
-                UploadNewFilesToLink uploadNewFilesToLink = new UploadNewFilesToLink();
-                UploadTask uploadTask = new UploadTask(String.format("%s/link/add/%s", BACK_END_URL, link.getId()), files, link);
-                uploadNewFilesToLink.execute(uploadTask);
-            }
-        }
+    public void fileProcessAction(List<File> files) {
+        UploadNewFilesToLink uploadNewFilesToLink = new UploadNewFilesToLink();
+        UploadTask uploadTask = new UploadTask(String.format("%s/link/add/%s", BACK_END_URL, link.getId()), files, link);
+        uploadNewFilesToLink.execute(uploadTask);
     }
 
     private class UploadNewFilesToLink extends AsyncTask<UploadTask, Void, FinishedUploadTask> {
@@ -170,7 +142,8 @@ public class ManageLinkFragment extends Fragment {
             UploadTask uploadTask = uploadTasks[0];
 
             try {
-                return new FinishedUploadTask(fileUploader.uploadFiles(uploadTask.getFiles(), uploadTask.getUrl()), uploadTask.getLink().getId());
+                return new FinishedUploadTask(new ObjectMapper().readValue(fileUploader.uploadFiles(uploadTask.getFiles(), uploadTask.getUrl()),
+                        new TypeReference<List<SharedFile>>() {}), uploadTask.getLink().getId());
             } catch (IOException e) {
                 e.printStackTrace();
             }

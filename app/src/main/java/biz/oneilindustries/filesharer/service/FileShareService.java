@@ -17,7 +17,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +28,6 @@ import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
 import biz.oneilindustries.filesharer.database.FileShareDatabaseManager;
 import biz.oneilindustries.filesharer.http.APICaller;
-import biz.oneilindustries.filesharer.http.FileUploader;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -40,7 +42,6 @@ public class FileShareService {
     private ObjectMapper objectMapper;
     private FileShareDatabaseManager fileShareDatabaseManager;
     private Context context;
-    private FileUploader fileUploader;
 
     public FileShareService(Context context) {
         this.context = context;
@@ -49,7 +50,6 @@ public class FileShareService {
                 MODE_PRIVATE);
         objectMapper = new ObjectMapper();
         this.fileShareDatabaseManager = new FileShareDatabaseManager(context);
-        this.fileUploader = new FileUploader(new AuthService(context));
     }
 
     public List<Link> fetchUserLinks() {
@@ -99,6 +99,9 @@ public class FileShareService {
 
         fileShareDatabaseManager.open();
 
+        if (fileShareDatabaseManager.getLink(linkId) == null) {
+            fileShareDatabaseManager.updateOrInsertLink(link);
+        }
         link.getFiles().forEach(sharedFile -> fileShareDatabaseManager.updateOrInsertFile(sharedFile, link.getId()));
 
         fileShareDatabaseManager.close();
@@ -225,5 +228,16 @@ public class FileShareService {
             return "";
         });
         return errorMessage.join();
+    }
+
+    public void sendSharedFilesToAPI(List<File> files, String linkTitle) {
+
+    }
+
+    public Date getTwoWeeksExpiry() {
+        LocalDateTime localDateTime = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        localDateTime = localDateTime.plusWeeks(2);
+
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

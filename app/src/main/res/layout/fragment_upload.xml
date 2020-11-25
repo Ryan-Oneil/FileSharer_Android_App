@@ -44,6 +44,7 @@
         android:background="#262626"
         android:textColor="#acacac"
         android:text="Expires"
+        android:enabled="false"
         android:textSize="32sp"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
