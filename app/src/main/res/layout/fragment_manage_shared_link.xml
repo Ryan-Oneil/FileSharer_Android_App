@@ -11,15 +11,15 @@
     <EditText
         android:id="@+id/editLinkTitle"
         android:layout_width="373dp"
-        android:layout_height="49dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="20dp"
         android:background="#696969"
         android:textSize="32sp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Title"
+        android:layout_height="wrap_content"
+        android:inputType="text|textMultiLine"
+        android:text="@string/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,6 @@
     <EditText
         android:id="@+id/editExpires"
         android:layout_width="373dp"
-        android:layout_height="49dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="20dp"
@@ -35,8 +34,9 @@
         android:editable="false"
         android:ems="10"
         android:enabled="false"
-        android:inputType="date"
-        android:text="Expires"
+        android:layout_height="wrap_content"
+        android:inputType="text|textMultiLine"
+        android:text="@string/expires"
         android:textColor="#acacac"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,62 +57,58 @@
         app:layout_constraintTop_toBottomOf="@+id/editExpires" />
 
     <Button
-        android:id="@+id/deleteLinkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
-        android:background="#d45578"
-        android:text="Delete"
-        app:layout_constraintBottom_toTopOf="@+id/copyUrlButton"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <Button
-        android:id="@+id/copyUrlButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginBottom="5dp"
-        android:background="#d45578"
-        android:text="Copy Url"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/addFilesToLinkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginBottom="5dp"
-        android:background="#d45578"
-        android:text="Add Files"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/saveLinkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
         android:background="#d45578"
-        android:text="Save"
-        app:layout_constraintBottom_toTopOf="@+id/copyUrlButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/link_manage_view_files" />
 
     <Button
         android:id="@+id/viewLinkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="304dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
         android:background="#d45578"
-        android:text="View"
-        app:layout_constraintBottom_toTopOf="@+id/addFilesToLinkButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="@string/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/link_manage_view_files" />
+
+    <Button
+        android:id="@+id/copyUrlButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="12dp"
+        android:background="#d45578"
+        android:text="@string/copy_url"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deleteLinkButton" />
+
+    <Button
+        android:id="@+id/addFilesToLinkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="236dp"
+        android:layout_marginTop="12dp"
+        android:background="#d45578"
+        android:text="@string/add_files"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveLinkButton" />
+
+    <Button
+        android:id="@+id/deleteLinkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:background="#d45578"
+        android:text="@string/delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/link_manage_view_files" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

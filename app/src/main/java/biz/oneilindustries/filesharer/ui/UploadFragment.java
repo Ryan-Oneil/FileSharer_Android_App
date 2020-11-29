@@ -47,7 +47,7 @@ public class UploadFragment extends FileChooserFragment {
         addFilesButton.setOnClickListener(getButtonClickListener());
 
         EditText editText = root.findViewById(R.id.share_link_expires_input);
-        editText.setText(expires.toString());
+        editText.setText(String.format("Expires: %s", expires.toString()));
 
         Button shareButton = root.findViewById(R.id.share_add_share_button);
         shareButton.setOnClickListener(v -> {

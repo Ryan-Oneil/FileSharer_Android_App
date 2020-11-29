@@ -73,7 +73,7 @@ public class ManageLinkFragment extends FileChooserFragment {
         title.setText(link.getTitle().isEmpty() ? "No Title Set" : link.getTitle());
 
         EditText expires = root.findViewById(R.id.editExpires);
-        expires.setText(link.getExpiryDatetime().toString());
+        expires.setText(String.format("Expires: %s", link.getExpiryDatetime().toString()));
 
         ArrayList<SharedFile> files = fileShareService.getLinkFiles(link);
 

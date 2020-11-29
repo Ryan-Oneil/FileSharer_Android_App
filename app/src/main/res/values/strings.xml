@@ -21,4 +21,10 @@
     <string name="expires">Expires</string>
     <string name="add_files">Add Files</string>
     <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="copy_url">Copy Url</string>
+    <string name="view">View</string>
+    <string name="manage">Manage</string>
+    <string name="size">Size</string>
 </resources>

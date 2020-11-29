@@ -189,7 +189,6 @@ public class AuthService {
         final Handler mainHandler = new Handler(Looper.getMainLooper());
 
         if (!error.isEmpty()) {
-            System.out.println(error);
             mainHandler.post(() -> Toast.makeText(context, error, Toast.LENGTH_SHORT).show());
             return false;
         } else {
