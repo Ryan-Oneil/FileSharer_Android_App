@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,8 +25,8 @@ import java.util.Locale;
 
 import biz.oneilindustries.filesharer.DTO.UploadTask;
 import biz.oneilindustries.filesharer.R;
-import biz.oneilindustries.filesharer.listadapters.SelectedFileAdapter;
 import biz.oneilindustries.filesharer.http.FileUploader;
+import biz.oneilindustries.filesharer.listadapters.SelectedFileAdapter;
 import biz.oneilindustries.filesharer.service.AuthService;
 import biz.oneilindustries.filesharer.service.FileShareService;
 
@@ -56,10 +59,15 @@ public class UploadFragment extends FileChooserFragment {
             } else {
                 EditText titleInput = root.findViewById(R.id.share_link_title_input);
                 String title = titleInput.getText().toString();
-                String uploadURL = String.format("%s/share?title=%s&expires=%s", BACK_END_URL, title, formatter.format(expires));
 
-                ShareNewLinkTask shareNewLinkTask = new ShareNewLinkTask();
-                shareNewLinkTask.execute(new UploadTask(uploadURL, selectedFiles, null));
+                try {
+                    String uploadURL = String.format("%s/share?title=%s&expires=%s", BACK_END_URL,  URLEncoder.encode(title, String.valueOf(StandardCharsets.UTF_8)), URLEncoder.encode(formatter.format(expires), String.valueOf(StandardCharsets.UTF_8)));
+
+                    ShareNewLinkTask shareNewLinkTask = new ShareNewLinkTask();
+                    shareNewLinkTask.execute(new UploadTask(uploadURL, selectedFiles, null));
+                } catch (UnsupportedEncodingException e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         selectedFileAdapter = new SelectedFileAdapter(getContext(), R.layout.uploaded_files_list_item, R.id.link_share_new_files, selectedFiles);
