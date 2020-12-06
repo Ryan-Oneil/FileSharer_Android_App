@@ -25,10 +25,12 @@ public abstract class FileChooserFragment extends Fragment {
             ArrayList<File> files = new ArrayList<>();
             FileUtils fileUtils = new FileUtils(getContext());
 
+            //Checks if multiple files were selected
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
                 int index = 0;
 
+                //Loops through all files
                 while (index < count) {
                     Uri uri = data.getClipData().getItemAt(index).getUri();
                     String filePath = fileUtils.getPath(uri);
@@ -48,6 +50,7 @@ public abstract class FileChooserFragment extends Fragment {
                 }
             }
 
+            //Calls the abstract method which is implemented by sub fragment
             if (!files.isEmpty()) {
                 fileProcessAction(files);
             }
@@ -56,6 +59,7 @@ public abstract class FileChooserFragment extends Fragment {
 
     public abstract void fileProcessAction(List<File> files);
 
+    //Returns the button click listener for opening the file browser/chooser
     public View.OnClickListener getButtonClickListener() {
         return v -> {
             Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);

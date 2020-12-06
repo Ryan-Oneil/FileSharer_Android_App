@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Checks if user is already logged in
         redirectIfLoggedIn();
         authService = new AuthService(getApplicationContext());
 
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button registerButton = findViewById(R.id.registerButton);
+        //Displays the register screen
         registerButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegisterActivity.class);
 

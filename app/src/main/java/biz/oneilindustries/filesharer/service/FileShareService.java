@@ -58,14 +58,17 @@ public class FileShareService {
 
         CompletableFuture<List<Link>> future = futureResponse.thenApplyAsync(response -> {
             try {
+                //Gets the json path for the links array
                 String links = JsonPath.parse(response.body().string()).read("$..links.*").toString();
 
+                //Serialises the json into link objects in a list array
                 return objectMapper.readValue(links, new TypeReference<List<Link>>() {});
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         });
+        //Waits for the async call to finish
         List<Link> links = future.join();
 
         fileShareDatabaseManager.open();
@@ -95,10 +98,12 @@ public class FileShareService {
             }
             return null;
         });
+        //Waits for the async call to finish
         Link link = future.join();
 
         fileShareDatabaseManager.open();
 
+        //Saves the link into local database if not found
         if (fileShareDatabaseManager.getLink(linkId) == null) {
             fileShareDatabaseManager.updateOrInsertLink(link);
         }
@@ -132,15 +137,15 @@ public class FileShareService {
     }
 
     public String deleteFile(SharedFile file) {
-        fileShareDatabaseManager.open();
-        fileShareDatabaseManager.deleteFile(file);
-        fileShareDatabaseManager.close();
-
         CompletableFuture<Response> futureResponse = apiCaller.deleteCall(String.format("/file/delete/%s", file.getId()));
 
         CompletableFuture<String> future = futureResponse.thenApplyAsync(response -> {
             try {
                 if (response.isSuccessful()) {
+                    fileShareDatabaseManager.open();
+                    fileShareDatabaseManager.deleteFile(file);
+                    fileShareDatabaseManager.close();
+
                     return "Deleted File";
                 }else {
                     return response.body().string();
@@ -190,6 +195,7 @@ public class FileShareService {
         fileShareDatabaseManager.close();
     }
 
+    //Function creates a cached file from phone internal storage and returns said file
     public File getCachedFile(Uri uri, String filePath) {
         File file = new File(filePath);
 
@@ -228,10 +234,6 @@ public class FileShareService {
             return "";
         });
         return errorMessage.join();
-    }
-
-    public void sendSharedFilesToAPI(List<File> files, String linkTitle) {
-
     }
 
     public Date getTwoWeeksExpiry() {

@@ -45,6 +45,7 @@ public class SharedLinkAdapter extends ArrayAdapter<Link> {
 
         Button manageButton = row.findViewById(R.id.manage_link_button);
 
+        //Redirects user to the manage link fragment
         manageButton.setOnClickListener(v -> {
             Fragment detailFragment = new ManageLinkFragment();
             Bundle bundle = new Bundle();

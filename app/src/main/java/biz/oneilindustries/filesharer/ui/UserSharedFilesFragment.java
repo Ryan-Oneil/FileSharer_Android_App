@@ -27,6 +27,7 @@ public class UserSharedFilesFragment extends Fragment {
         FileShareService fileShareService = new FileShareService(root.getContext());
         ArrayList<Link> links = fileShareService.getUserLinks();
 
+        //Fetches links from api if none were found
         if (links.isEmpty()) {
             links = (ArrayList<Link>) fileShareService.fetchUserLinks();
         }

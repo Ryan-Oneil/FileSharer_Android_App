@@ -18,6 +18,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 
+//Class to be used during auth calls in okhttp httpclient
 public class TokenAuth implements Authenticator {
 
     private AuthService authService;

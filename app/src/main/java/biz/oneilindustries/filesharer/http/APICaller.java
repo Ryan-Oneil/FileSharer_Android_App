@@ -35,18 +35,6 @@ public class APICaller {
         return future.future.thenApply(response -> response);
     }
 
-    public CompletableFuture<Response> postCall(String endpoint, RequestBody body) {
-        final Request request = new Request.Builder()
-                .url(BACK_END_URL + endpoint)
-                .post(body)
-                .build();
-
-        CallbackFuture future = new CallbackFuture();
-        httpClient.newCall(request).enqueue(future);
-
-        return future.future.thenApply(response -> response);
-    }
-
     public CompletableFuture<Response> deleteCall(String endpoint) {
         final Request request = new Request.Builder()
                 .url(BACK_END_URL + endpoint)

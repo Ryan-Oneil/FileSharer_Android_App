@@ -1,7 +1,6 @@
 package biz.oneilindustries.filesharer.listadapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 
-import biz.oneilindustries.filesharer.DTO.Link;
 import biz.oneilindustries.filesharer.DTO.SharedFile;
 import biz.oneilindustries.filesharer.R;
 import biz.oneilindustries.filesharer.service.FileShareService;
-import biz.oneilindustries.filesharer.ui.ManageLinkFragment;
 
 public class SharedFileAdapter extends ArrayAdapter<SharedFile> {
 
@@ -59,7 +53,7 @@ public class SharedFileAdapter extends ArrayAdapter<SharedFile> {
         return row;
     }
 
-    //https://stackoverflow.com/questions/3758606/how-can-i-convert-byte-size-into-a-human-readable-format-in-java
+    // Reference: https://stackoverflow.com/questions/3758606/how-can-i-convert-byte-size-into-a-human-readable-format-in-java
     public String humanReadableByteCountSI(long bytes) {
         if (-1000 < bytes && bytes < 1000) {
             return bytes + " B";
@@ -71,4 +65,5 @@ public class SharedFileAdapter extends ArrayAdapter<SharedFile> {
         }
         return String.format("%.1f %cB", bytes / 1000.0, ci.current());
     }
+    //End reference
 }

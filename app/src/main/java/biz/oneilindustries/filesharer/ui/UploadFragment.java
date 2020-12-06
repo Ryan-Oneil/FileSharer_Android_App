@@ -43,7 +43,8 @@ public class UploadFragment extends FileChooserFragment {
 
         View root = inflater.inflate(R.layout.fragment_upload, container, false);
         fileShareService = new FileShareService(getContext());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());// 2018-06-19T22:38:28+0000
+        // 2018-06-19T22:38:28+0000 - sample date format
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
         Date expires = fileShareService.getTwoWeeksExpiry();
 
         Button addFilesButton = root.findViewById(R.id.share_add_files_button);
@@ -61,6 +62,7 @@ public class UploadFragment extends FileChooserFragment {
                 String title = titleInput.getText().toString();
 
                 try {
+                    //Encodes the title and expires into UTF8 standards to prevent malformed urls
                     String uploadURL = String.format("%s/share?title=%s&expires=%s", BACK_END_URL,  URLEncoder.encode(title, String.valueOf(StandardCharsets.UTF_8)), URLEncoder.encode(formatter.format(expires), String.valueOf(StandardCharsets.UTF_8)));
 
                     ShareNewLinkTask shareNewLinkTask = new ShareNewLinkTask();

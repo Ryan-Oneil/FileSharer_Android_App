@@ -43,7 +43,7 @@ public class AuthService {
 
     public boolean loginUser(final String username, final String password) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
-
+        //Saves the user login details for fetching refresh tokens in future use
         edit.putString("username", username);
         edit.putString("password", password);
         edit.commit();
@@ -64,11 +64,10 @@ public class AuthService {
 
         if (!response.isSuccessful()) {
             final Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(() -> {
-                Toast.makeText(context, "Invalid Login Details", Toast.LENGTH_SHORT).show();
-            });
+            mainHandler.post(() -> Toast.makeText(context, "Invalid Login Details", Toast.LENGTH_SHORT).show());
             return false;
         } else {
+            //Gets refresh jwt from response
             String refreshToken = response.header("Authorization");
             edit.putBoolean("isLoggedIn", true);
             edit.putString("refreshToken", refreshToken);
@@ -134,7 +133,7 @@ public class AuthService {
         Response response = call.execute();
         SharedPreferences.Editor edit = sharedPreferences.edit();
 
-        if (response.code() != 200) {
+        if (!response.isSuccessful()) {
             edit.remove("refreshToken");
         } else {
             authToken = response.body().string();

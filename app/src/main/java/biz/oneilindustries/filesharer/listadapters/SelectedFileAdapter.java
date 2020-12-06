@@ -44,7 +44,7 @@ public class SelectedFileAdapter extends ArrayAdapter<File> {
         return row;
     }
 
-    //https://stackoverflow.com/questions/3758606/how-can-i-convert-byte-size-into-a-human-readable-format-in-java
+    //Reference: https://stackoverflow.com/questions/3758606/how-can-i-convert-byte-size-into-a-human-readable-format-in-java
     public String humanReadableByteCountSI(long bytes) {
         if (-1000 < bytes && bytes < 1000) {
             return bytes + " B";
@@ -56,4 +56,5 @@ public class SelectedFileAdapter extends ArrayAdapter<File> {
         }
         return String.format("%.1f %cB", bytes / 1000.0, ci.current());
     }
+    // End reference
 }

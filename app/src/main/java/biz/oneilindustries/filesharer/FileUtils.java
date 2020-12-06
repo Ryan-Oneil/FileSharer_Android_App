@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-//https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri/60642994#answer-60642994
+//reference: https://stackoverflow.com/questions/13209494/how-to-get-the-full-file-path-from-uri/60642994#answer-60642994
 //Class used to get files from URIs. sadly no easier way of handling this use case
 public class FileUtils {
     private static Uri contentUri = null;
@@ -41,7 +41,6 @@ public class FileUtils {
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
-                final String type = split[0];
 
                 String fullPath = getPathFromExtSD(split);
                 if (fullPath != "") {
@@ -395,3 +394,4 @@ public class FileUtils {
 
 
 }
+// End Reference

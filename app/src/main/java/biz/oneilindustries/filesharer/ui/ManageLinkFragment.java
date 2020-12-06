@@ -55,7 +55,9 @@ public class ManageLinkFragment extends FileChooserFragment {
         View root = inflater.inflate(R.layout.fragment_manage_shared_link, container, false);
         fileShareService = new FileShareService(root.getContext());
 
-        if (ContextCompat.checkSelfPermission(root.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(root.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(root.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(root.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
 
@@ -63,6 +65,7 @@ public class ManageLinkFragment extends FileChooserFragment {
         String linkId = bundle.getString("id");
         link = fileShareService.getLocalLink(linkId);
 
+        //Returns back to previous screen if the link doesn't exist
         if (link == null) {
             getActivity().onBackPressed();
 
@@ -77,6 +80,7 @@ public class ManageLinkFragment extends FileChooserFragment {
 
         ArrayList<SharedFile> files = fileShareService.getLinkFiles(link);
 
+        //Checks if the link has files, if not attempt to fetch details from api
         if (files.isEmpty()) {
             fileShareService.fetchLinkDetails(linkId);
 
@@ -93,6 +97,7 @@ public class ManageLinkFragment extends FileChooserFragment {
         });
 
         Button copyURL = root.findViewById(R.id.copyUrlButton);
+        // Listener for copying shared url to clipboard
         copyURL.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) root.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Share URL", SHARE_URL + link.getId());
@@ -113,6 +118,7 @@ public class ManageLinkFragment extends FileChooserFragment {
         saveLinkButton.setOnClickListener(v -> {
             String titleValue = title.getText().toString();
 
+            //Checks that the title isn't blank and original value was changed
             if (!titleValue.isEmpty() && !titleValue.equalsIgnoreCase(link.getTitle())) {
                 link.setTitle(titleValue);
                 String errorMessage = fileShareService.updateLinkDetails(link);
@@ -134,6 +140,7 @@ public class ManageLinkFragment extends FileChooserFragment {
         uploadNewFilesToLink.execute(uploadTask);
     }
 
+    //Async task for uploading new files to existing link
     private class UploadNewFilesToLink extends AsyncTask<UploadTask, Void, FinishedUploadTask> {
 
         @Override
